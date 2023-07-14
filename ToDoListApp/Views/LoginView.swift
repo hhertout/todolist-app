@@ -8,53 +8,56 @@
 import SwiftUI
 
 struct LoginView: View {
-    
-    @State var email: String = ""
-    @State var password: String = ""
+    @StateObject var viewModel = LoginViewViewModel()
     
     var body: some View {
         NavigationView {
             VStack {
                 //header
-                HeaderView()
+                HeaderView(
+                    title: "To Do List",
+                    subtitle: "Get things done",
+                    angle: 15,
+                    backgroundColor: .blue,
+                    offset: 100
+                )
+                
+                VStack {
+                    if !viewModel.errorMessage.isEmpty {
+                        Text("Error : " + viewModel.errorMessage)
+                            .foregroundColor(Color.red)
+                    }
+                }
                 
                 //login form
                 Form {
-                    TextField("Email Adress", text: $email)
+                    TextField("Email Adress", text: $viewModel.email)
                         .textFieldStyle(DefaultTextFieldStyle())
                         .keyboardType(.emailAddress)
                         .autocorrectionDisabled(true)
+                        .autocapitalization(.none)
                         .padding(8)
-                    SecureField("Password", text: $password)
+                    SecureField("Password", text: $viewModel.password)
                         .textFieldStyle(DefaultTextFieldStyle())
                         .autocorrectionDisabled(true)
+                        .autocapitalization(.none)
                         .padding(8)
                     
-                    Button {
-                        // Attemp to log in
-                    } label: {
-                        ZStack{
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color.blue)
-                            
-                            Text("Log in")
-                                .bold()
-                                .foregroundColor(Color.white)
-                                .padding(4)
-                        }
+                    StandardButton(
+                        title: "Login",
+                        background: .blue,
+                        color: .white
+                    ) {
+                        viewModel.login()
                     }
-                    .padding()
                 }
-                // Create account
+                
                 VStack {
                     Text("New around here ?")
                     NavigationLink("Create an Account now !", destination: RegisterView())
                         .padding(4)
                 }
                 .padding(.bottom, 50)
-                
-                //more
-                
             }
         }
     }
