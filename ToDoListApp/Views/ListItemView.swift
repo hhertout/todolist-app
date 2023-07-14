@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ListItemView: View {
+    @State var viewModel = ListItemViewViewModel()
+    
     var body: some View {
         Text("Item")
     }

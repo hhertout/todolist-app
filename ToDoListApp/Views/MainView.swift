@@ -11,12 +11,26 @@ struct MainView: View {
     @StateObject var viewModel = MainViewViewModel()
     var body: some View {
         if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty {
-            //signed in
-            ListView()
+            // is signed in
+            loggedView
         } else {
             VStack {
                 LoginView()
             }
+        }
+    }
+    
+    @ViewBuilder
+    var loggedView: some View {
+        TabView {
+            ListView(userId: viewModel.currentUserId)
+                .tabItem {
+                    Label("Home", systemImage: "house")
+                }
+            ProfileView()
+                .tabItem {
+                    Label("Profile", systemImage: "person.circle")
+                }
         }
     }
 }

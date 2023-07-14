@@ -8,13 +8,47 @@
 import SwiftUI
 
 struct NewItemView: View {
+    @State var viewModel = NewItemViewViewModel()
+    @Binding var newItemPresented: Bool
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("New Item")
+                .font(.system(size:32))
+                .bold()
+                .padding(.top, 100)
+            
+            Form {
+                TextField("Title", text: $viewModel.title)
+                    .textFieldStyle(DefaultTextFieldStyle())
+                DatePicker("Due Date", selection: $viewModel.dueDate)
+                    .datePickerStyle(GraphicalDatePickerStyle())
+                
+                StandardButton(
+                    title: "Create",
+                    background: .orange,
+                    color: .white
+                ) {
+                    if viewModel.isValid {
+                        viewModel.save()
+                        newItemPresented = false
+                    } else {
+                        viewModel.showAlert = true
+                    }
+                }
+                .padding()
+            }
+            .alert(isPresented: $viewModel.showAlert) {
+                Alert(title: Text("Error"), message: Text("Invalid entries"))
+            }
+        }
     }
 }
 
 struct NewItemView_Previews: PreviewProvider {
     static var previews: some View {
-        NewItemView()
+        NewItemView(newItemPresented: Binding(get: {
+            return true
+        }, set: {_ in }))
     }
 }
