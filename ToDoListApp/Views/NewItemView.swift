@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NewItemView: View {
-    @State var viewModel = NewItemViewViewModel()
+    @StateObject var viewModel = NewItemViewViewModel()
     @Binding var newItemPresented: Bool
     
     var body: some View {

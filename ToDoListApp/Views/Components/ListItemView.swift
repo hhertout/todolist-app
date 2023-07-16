@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ListItemView: View {
-    @State var viewModel = ListItemViewViewModel()
     let item : TodoListItem
     let listViewModel: ListViewViewModel
     
